@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@daypilot/daypilot-lite-angular": "^5.4.0"
+  }
+}
