@@ -1,0 +1,44 @@
+<div class="layout">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>Turnos Psicóloga</h2>
+      <p class="subtitle">Sistema de Turnos</p>
+    </div>
+
+    <div class="sidebar-actions">
+      <button class="btn btn-primary" (click)="crearReservaManual()">
+        Crear Reserva
+      </button>
+      <button class="btn btn-secondary" (click)="irAHoy()">
+        Ir a Hoy
+      </button>
+    </div>
+
+    <div class="navigator-container">
+      <daypilot-navigator
+        #navigator
+        [config]="navigatorConfig"
+      ></daypilot-navigator>
+    </div>
+
+    <div class="sidebar-info">
+      <h4>Instrucciones</h4>
+      <ul>
+        <li>Seleccione un rango en el calendario para crear un turno</li>
+        <li>Haga clic en un turno para ver o editar datos</li>
+        <li>Arrastre un turno para reprogramar</li>
+        <li>Pase el mouse sobre un turno y presione ✕ para cancelar</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Calendario principal -->
+  <div class="main-content">
+    <daypilot-calendar
+      #calendario
+      [config]="calendarConfig"
+      [events]="events"
+    ></daypilot-calendar>
+  </div>
+</div>

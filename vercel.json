@@ -1,1 +1,16 @@
-{\n  "version": 2,\n  "builds": [\n    {\n      "src": "src/main.ts",\n      "use": "@vercel/node"\n    }\n  ],\n  "routes": [\n    {\n      "src": "/(.*)",\n      "dest": "/src/$1"\n    }\n  ]\n}
+{
+  "version": 2,
+  "framework": null,
+  "installCommand": "cd turnos-psicologo && npm install",
+  "buildCommand": "cd turnos-psicologo && npm run vercel-build",
+  "outputDirectory": "turnos-psicologo/dist/turnos-psicologo/browser",
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

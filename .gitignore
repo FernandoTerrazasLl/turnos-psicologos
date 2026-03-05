@@ -2,6 +2,7 @@
 
 # ignore compiled output and temporary directories
 /dist
+**/dist
 /tmp
 /out-tsc
 /bazel-out
@@ -29,6 +30,7 @@ node_modules
 
 # Miscellaneous
 /.angular/cache
+**/.angular/cache
 .sass-cache/
 /connect.lock
 /coverage
