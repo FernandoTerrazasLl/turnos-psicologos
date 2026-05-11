@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Reserva } from '../models/reserva.model';
-import { ValidadorDisponibilidad } from '../core/contratos';
+import { Reserva } from '../../entities/reserva/reserva.model';
+import { ValidadorDisponibilidad } from './contratos';
 
 @Injectable({ providedIn: 'root' })
 export class DisponibilidadService implements ValidadorDisponibilidad {
-  verificar(
-    start: string,
-    end: string,
-    reservas: Reserva[],
-    excludeId?: string
-  ): boolean {
+  verificar(start: string, end: string, reservas: Reserva[], excludeId?: string): boolean {
     const candidatos = reservas.filter(r => r.id !== excludeId);
     const newStart = new Date(start).getTime();
     const newEnd = new Date(end).getTime();

@@ -1,0 +1,52 @@
+<div class="turnos-layout">
+  <!-- Sidebar -->
+  <div class="turnos-layout__sidebar sidebar">
+    <div class="sidebar__header">
+      <h2 class="sidebar__title">Turnos Psicóloga</h2>
+      <p class="sidebar__subtitle">Sistema de Turnos</p>
+    </div>
+
+    <div class="sidebar__actions">
+      <button class="btn btn--primary" (click)="crearReservaManual()">
+        Crear Reserva
+      </button>
+      <button class="btn btn--secondary" (click)="irAHoy()">
+        Ir a Hoy
+      </button>
+    </div>
+
+    <div class="sidebar__navigator">
+      <!-- 
+        El DayPilotNavigatorComponent renderiza el mini calendario interactivo
+        que permite seleccionar una fecha o una semana completa para navegar.
+      -->
+      <daypilot-navigator
+        #navigator
+        [config]="navigatorConfig"
+      ></daypilot-navigator>
+    </div>
+
+    <div class="sidebar__info">
+      <h4 class="sidebar__info-title">Instrucciones</h4>
+      <ul class="sidebar__info-list">
+        <li class="sidebar__info-item">Seleccione un rango en el calendario para crear un turno</li>
+        <li class="sidebar__info-item">Haga clic en un turno para ver o editar datos</li>
+        <li class="sidebar__info-item">Arrastre un turno para reprogramar</li>
+        <li class="sidebar__info-item">Pase el mouse sobre un turno y presione ✕ para cancelar</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Calendario principal -->
+  <div class="turnos-layout__main-content">
+    <!-- 
+      El DayPilotCalendarComponent renderiza la grilla principal de la semana
+      con las horas y días, permitiendo arrastrar, crear y mover eventos visualmente.
+    -->
+    <daypilot-calendar
+      #calendario
+      [config]="calendarConfig"
+      [events]="events"
+    ></daypilot-calendar>
+  </div>
+</div>

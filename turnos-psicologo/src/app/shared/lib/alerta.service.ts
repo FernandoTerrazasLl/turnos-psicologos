@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DayPilot } from '@daypilot/daypilot-lite-angular';
-import { ServicioAlerta } from '../core/contratos';
+import { ServicioAlerta } from './contratos';
 
 @Injectable({ providedIn: 'root' })
 export class AlertaService implements ServicioAlerta {
@@ -14,12 +14,12 @@ export class AlertaService implements ServicioAlerta {
   }
 
   async error(mensaje: string): Promise<void> {
-    const mensajeConEmoji = `❌ ${mensaje}`;
+    const mensajeConEmoji = `${mensaje}`;
     await this.info(mensajeConEmoji);
   }
 
   async exito(mensaje: string): Promise<void> {
-    const mensajeConEmoji = `✅ ${mensaje}`;
+    const mensajeConEmoji = `${mensaje}`;
     await this.info(mensajeConEmoji);
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DayPilot } from '@daypilot/daypilot-lite-angular';
-import { ValidadorFecha } from '../core/contratos';
+import { ValidadorFecha } from './contratos';
 
 @Injectable({ providedIn: 'root' })
 export class DiaNoLaboralService implements ValidadorFecha {

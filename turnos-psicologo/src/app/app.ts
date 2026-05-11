@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CalendarioComponent } from './components/calendario/calendario.component';
+import { CalendarioComponent } from './widgets/calendario/calendario.component';
 
 @Component({
   selector: 'app-root',

@@ -1,12 +1,12 @@
-.layout {
+/* ========== BLOQUE: turnos-layout ========== */
+.turnos-layout {
   display: flex;
   height: 100vh;
   font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
   background-color: #f0f2f5;
 }
 
-/* ========== SIDEBAR ========== */
-.sidebar {
+.turnos-layout__sidebar {
   width: 280px;
   min-width: 280px;
   background: #ffffff;
@@ -17,34 +17,83 @@
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
 }
 
-.sidebar-header {
+.turnos-layout__main-content {
+  flex: 1;
+  padding: 16px 20px;
+  overflow: auto;
+  min-width: 0;
+}
+
+/* ========== BLOQUE: sidebar ========== */
+.sidebar__header {
   padding: 24px 20px 16px;
   border-bottom: 1px solid #e8ecf0;
   background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
   color: white;
 }
 
-.sidebar-header h2 {
+.sidebar__title {
   margin: 0;
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: -0.3px;
 }
 
-.sidebar-header .subtitle {
+.sidebar__subtitle {
   margin: 4px 0 0;
   font-size: 0.85rem;
   opacity: 0.85;
 }
 
-/* ========== BOTONES ========== */
-.sidebar-actions {
+.sidebar__actions {
   padding: 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
+.sidebar__navigator {
+  padding: 8px 20px 16px;
+  border-bottom: 1px solid #e8ecf0;
+}
+
+.sidebar__info {
+  padding: 16px 20px;
+  flex: 1;
+}
+
+.sidebar__info-title {
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sidebar__info-list {
+  margin: 0;
+  padding: 0 0 0 18px;
+  list-style: none;
+}
+
+.sidebar__info-item {
+  position: relative;
+  padding: 5px 0;
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.5;
+}
+
+.sidebar__info-item::before {
+  content: '•';
+  position: absolute;
+  left: -14px;
+  color: #4A90D9;
+  font-weight: bold;
+}
+
+/* ========== BLOQUE: btn ========== */
 .btn {
   display: flex;
   align-items: center;
@@ -64,77 +113,26 @@
   transform: scale(0.97);
 }
 
-.btn-primary {
+.btn--primary {
   background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
   color: white;
   box-shadow: 0 2px 6px rgba(74, 144, 217, 0.3);
 }
 
-.btn-primary:hover {
+.btn--primary:hover {
   background: linear-gradient(135deg, #357ABD 0%, #2a6299 100%);
   box-shadow: 0 4px 12px rgba(74, 144, 217, 0.4);
 }
 
-.btn-secondary {
+.btn--secondary {
   background: #f5f7fa;
   color: #4A90D9;
   border: 1px solid #d0dce8;
 }
 
-.btn-secondary:hover {
+.btn--secondary:hover {
   background: #e8eef5;
   border-color: #4A90D9;
-}
-
-/* ========== NAVIGATOR ========== */
-.navigator-container {
-  padding: 8px 20px 16px;
-  border-bottom: 1px solid #e8ecf0;
-}
-
-/* ========== INFO ========== */
-.sidebar-info {
-  padding: 16px 20px;
-  flex: 1;
-}
-
-.sidebar-info h4 {
-  margin: 0 0 10px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #555;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.sidebar-info ul {
-  margin: 0;
-  padding: 0 0 0 18px;
-  list-style: none;
-}
-
-.sidebar-info li {
-  position: relative;
-  padding: 5px 0;
-  font-size: 0.8rem;
-  color: #666;
-  line-height: 1.5;
-}
-
-.sidebar-info li::before {
-  content: '•';
-  position: absolute;
-  left: -14px;
-  color: #4A90D9;
-  font-weight: bold;
-}
-
-/* ========== MAIN CONTENT ========== */
-.main-content {
-  flex: 1;
-  padding: 16px 20px;
-  overflow: auto;
-  min-width: 0;
 }
 
 /* ========== DAYPILOT OVERRIDES ========== */
