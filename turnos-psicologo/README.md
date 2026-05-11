@@ -1,59 +1,59 @@
 # TurnosPsicologo
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.2.
+Guía rápida para ejecutar el proyecto localmente tras clonar desde GitHub.
 
-## Development server
+## 1. Requisitos
 
-To start a local development server, run:
+- Node.js 20+ (recomendado) y npm 10+.
+- Git.
+- Cuenta Supabase + proyecto con tablas y roles configurados según la app.
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 2. Clonar el repositorio
 
 ```bash
-ng generate component component-name
+git clone https://github.com/<tu-usuario>/turnos-psicologos.git
+cd turnos-psicologo
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 3. Instalar dependencias
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
-
-To build the project run:
+## 4. Correr en desarrollo
 
 ```bash
-ng build
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+El servidor estará en `http://localhost:4200/`.
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 5. Compilar producción
 
 ```bash
-ng test
+npm run build
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+o con configuración de Vercel:
 
 ```bash
-ng e2e
+npm run vercel-build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 6. Publicar en Vercel
 
-## Additional Resources
+- Ya no es necesario configurar variables de entorno en Vercel, ya que la conexión a Supabase está configurada directamente en el código de la aplicación.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 7. Diagnóstico rápido
+
+- `npm install` genera errores: actualiza Node/npm y elimina `node_modules` + `package-lock.json` y reinstala.
+- `ng serve` no funciona: revisa la versión de Angular CLI (`npm install -g @angular/cli@20.3.2` si hace falta).
+
+---
+
+## 11. Recursos
+
+- Angular CLI: https://angular.dev/guide/cli
+- DayPilot Lite: https://www.daypilot.org/
+- Supabase JS: https://supabase.com/docs/reference/javascript
