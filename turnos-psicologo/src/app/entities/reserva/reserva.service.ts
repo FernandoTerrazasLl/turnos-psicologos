@@ -82,14 +82,14 @@ export class ReservaService {
   }
 
   verificarDisponibilidad(start: string, end: string, reservasEnMemoria: Reserva[], excludeId?: string): boolean {
-    const candidatos = reservasEnMemoria.filter(r => r.id !== excludeId);
-    const newStart = new Date(start).getTime();
-    const newEnd = new Date(end).getTime();
+    const reservasFiltradas = reservasEnMemoria.filter(reservaExistente => reservaExistente.id !== excludeId);
+    const nuevoInicioMs = new Date(start).getTime();
+    const nuevoFinMs = new Date(end).getTime();
 
-    return !candidatos.some(r => {
-      const rStart = new Date(r.start).getTime();
-      const rEnd = new Date(r.end).getTime();
-      return newStart < rEnd && newEnd > rStart;
+    return !reservasFiltradas.some(reservaExistente => {
+      const inicioExistenteMs = new Date(reservaExistente.start).getTime();
+      const finExistenteMs = new Date(reservaExistente.end).getTime();
+      return nuevoInicioMs < finExistenteMs && nuevoFinMs > inicioExistenteMs;
     });
   }
 
