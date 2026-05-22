@@ -90,6 +90,15 @@
             ],
             "styles": [
               "src/styles.css"
+            ],
+            "codeCoverageExclude": [
+              "src/main.ts",
+              "src/app/widgets/**/*",
+              "src/app/app.config.ts",
+              "src/app/app.ts",
+              "src/app/shared/config/**/*",
+              "src/app/shared/api/**/*",
+              "src/environments/**/*"
             ]
           }
         }
