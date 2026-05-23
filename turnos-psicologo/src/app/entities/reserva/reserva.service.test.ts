@@ -57,7 +57,6 @@ describe('ReservaService Unit Tests (Vitest)', () => {
       id: 'mocked-id-123'
     };
 
-    // Chaining mock en Vitest:
     const mockSingle = vi.fn().mockResolvedValue({ data: mockResponseReserva, error: null });
     const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
     const mockInsert = vi.fn().mockReturnValue({ select: mockSelect });
