@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from 'vitest';
-import { AlertaService } from './alerta.service';
+import { AlertaService } from '../shared/lib/alerta.service';
 import { DayPilot } from '@daypilot/daypilot-lite-angular';
 
 // Mockear DayPilot Modal

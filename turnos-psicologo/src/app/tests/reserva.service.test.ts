@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
-import { ReservaService } from './reserva.service';
-import { Reserva } from './reserva.model';
-import { supabase } from '../../shared/api/supabase.client';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { ReservaService } from '../entities/reserva/reserva.service';
+import { Reserva } from '../entities/reserva/reserva.model';
+import { supabase } from '../shared/api/supabase.client';
 
-describe('ReservaService Unit Tests', () => {
+describe('ReservaService Unit Tests (Vitest)', () => {
   let service: ReservaService;
 
   const mockReservas: Reserva[] = [
@@ -32,13 +32,10 @@ describe('ReservaService Unit Tests', () => {
   ];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [ReservaService]
-    });
-    service = TestBed.inject(ReservaService);
+    service = new ReservaService();
   });
 
-  it('crearReserva_DatosCompletos_GuardaExitosamente', async () => {
+  test('crearReserva_DatosCompletos_GuardaExitosamente', async () => {
     // HU-3 - Criterio 1: Caso válido
     // Dado que el usuario ingresa datos correctos y completos en el formulario,
     // cuando guarda el turno, entonces el sistema debe asignarle un ID único
@@ -60,12 +57,10 @@ describe('ReservaService Unit Tests', () => {
       id: 'mocked-id-123'
     };
 
-    // Chaining mock:
-    // supabase.from('turnos').insert([...]).select().single()
-    const mockSingle = jasmine.createSpy('single').and.resolveTo({ data: mockResponseReserva, error: null });
-    const mockSelect = jasmine.createSpy('select').and.returnValue({ single: mockSingle });
-    const mockInsert = jasmine.createSpy('insert').and.returnValue({ select: mockSelect });
-    spyOn(supabase, 'from').and.returnValue({ insert: mockInsert } as any);
+    const mockSingle = vi.fn().mockResolvedValue({ data: mockResponseReserva, error: null });
+    const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
+    const mockInsert = vi.fn().mockReturnValue({ select: mockSelect });
+    vi.spyOn(supabase, 'from').mockReturnValue({ insert: mockInsert } as any);
 
     const result = await service.crearReserva(nuevaReservaInput);
 
@@ -74,7 +69,7 @@ describe('ReservaService Unit Tests', () => {
     expect(result).toEqual(mockResponseReserva);
   });
 
-  it('crearReserva_FaltaDatoObligatorio_ImpedirGuardar', async () => {
+  test('crearReserva_FaltaDatoObligatorio_ImpedirGuardar', async () => {
     // HU-3 - Criterio 2: Caso inválido
     // Dado que el usuario intenta guardar un turno incompleto (por ejemplo, sin nombre),
     // cuando hace clic en guardar, entonces el sistema debe impedir el guardado
@@ -91,10 +86,10 @@ describe('ReservaService Unit Tests', () => {
       motivo: 'Control'
     };
 
-    const mockSingle = jasmine.createSpy('single').and.resolveTo({ data: null, error: { message: 'Missing required field: nombre' } });
-    const mockSelect = jasmine.createSpy('select').and.returnValue({ single: mockSingle });
-    const mockInsert = jasmine.createSpy('insert').and.returnValue({ select: mockSelect });
-    spyOn(supabase, 'from').and.returnValue({ insert: mockInsert } as any);
+    const mockSingle = vi.fn().mockResolvedValue({ data: null, error: { message: 'Missing required field: nombre' } });
+    const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
+    const mockInsert = vi.fn().mockReturnValue({ select: mockSelect });
+    vi.spyOn(supabase, 'from').mockReturnValue({ insert: mockInsert } as any);
 
     const result = await service.crearReserva(incompletaReservaInput);
 
@@ -102,7 +97,7 @@ describe('ReservaService Unit Tests', () => {
     expect(result).toBeNull();
   });
 
-  it('actualizarReserva_ModificaDatos_GuardaExitosamente', async () => {
+  test('actualizarReserva_ModificaDatos_GuardaExitosamente', async () => {
     // HU-4 - Criterio 1: Caso válido
     // Dado que el usuario modifica los datos válidos de un turno preexistente,
     // cuando guarda los cambios, entonces el sistema debe actualizar el registro en la base de datos.
@@ -119,9 +114,9 @@ describe('ReservaService Unit Tests', () => {
       motivo: 'Consulta urgente'
     };
 
-    const mockEq = jasmine.createSpy('eq').and.resolveTo({ error: null });
-    const mockUpdate = jasmine.createSpy('update').and.returnValue({ eq: mockEq });
-    spyOn(supabase, 'from').and.returnValue({ update: mockUpdate } as any);
+    const mockEq = vi.fn().mockResolvedValue({ error: null });
+    const mockUpdate = vi.fn().mockReturnValue({ eq: mockEq });
+    vi.spyOn(supabase, 'from').mockReturnValue({ update: mockUpdate } as any);
 
     await service.actualizarReserva(reservaModificada);
 
@@ -139,7 +134,7 @@ describe('ReservaService Unit Tests', () => {
     expect(mockEq).toHaveBeenCalledWith('id', reservaModificada.id);
   });
 
-  it('verificarDisponibilidad_Solapamiento_RetornaFalso', () => {
+  test('verificarDisponibilidad_Solapamiento_RetornaFalso', () => {
     // HU-3 - Criterio 1: Regla de negocio de no solapamiento
     // Dado que se tiene un conjunto de turnos agendados en memoria,
     // cuando se intenta crear un nuevo turno en un horario que colisiona (solapa) con uno existente,
@@ -151,6 +146,6 @@ describe('ReservaService Unit Tests', () => {
 
     const esDisponible = service.verificarDisponibilidad(startSolapado, endSolapado, mockReservas);
 
-    expect(esDisponible).toBeFalse();
+    expect(esDisponible).toBe(false);
   });
 });
