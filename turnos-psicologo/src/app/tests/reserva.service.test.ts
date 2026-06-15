@@ -69,7 +69,7 @@ describe('ReservaService Unit Tests', () => {
     expect(result).toEqual(mockResponseReserva);
   });
 
-  it('crearReserva_FaltaDatoObligatorio_ImpedirGuardar', async () => {
+  test('crearReserva_FaltaDatoObligatorio_ImpedirGuardar', async () => {
     // HU-3 - Criterio 2: Caso inválido
     // Dado que el usuario intenta guardar un turno incompleto (por ejemplo, sin nombre),
     // cuando hace clic en guardar, entonces el sistema debe impedir el guardado
@@ -86,10 +86,10 @@ describe('ReservaService Unit Tests', () => {
       motivo: 'Control'
     };
 
-    const mockSingle = jasmine.createSpy('single').and.resolveTo({ data: null, error: { message: 'Missing required field: nombre' } });
-    const mockSelect = jasmine.createSpy('select').and.returnValue({ single: mockSingle });
-    const mockInsert = jasmine.createSpy('insert').and.returnValue({ select: mockSelect });
-    spyOn(supabase, 'from').and.returnValue({ insert: mockInsert } as any);
+    const mockSingle = vi.fn().mockResolvedValue({ data: null, error: { message: 'Missing required field: nombre' } });
+    const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
+    const mockInsert = vi.fn().mockReturnValue({ select: mockSelect });
+    vi.spyOn(supabase, 'from').mockReturnValue({ insert: mockInsert } as any);
 
     const result = await service.crearReserva(incompletaReservaInput);
 
