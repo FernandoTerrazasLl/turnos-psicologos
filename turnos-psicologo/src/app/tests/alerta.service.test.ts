@@ -13,8 +13,8 @@ vi.mock('@daypilot/daypilot-lite-angular', () => {
   };
 });
 
-describe('AlertaService (Vitest)', () => {
-  test('debe llamar a DayPilot.Modal.alert con el mensaje correcto en info()', async () => {
+describe('AlertaService', () => {
+  test('info_introduceMessageString_reeturnCorrectMessage', async () => {
     const service = new AlertaService();
     const mensaje = 'Mensaje de prueba';
     
@@ -26,7 +26,7 @@ describe('AlertaService (Vitest)', () => {
     });
   });
 
-  test('debe retornar true si el usuario confirma en confirmar()', async () => {
+  test('confirmar_introduceQuestionString_returnsTrueWhenUserConfirms', async () => {
     const service = new AlertaService();
     const pregunta = '¿Aceptar?';
     
@@ -42,7 +42,7 @@ describe('AlertaService (Vitest)', () => {
     });
   });
 
-  test('debe retornar false si el usuario cancela en confirmar()', async () => {
+  test('confirmar_introduceQuestionString_returnsFalseWhenUserCancels', async () => {
     const service = new AlertaService();
     const pregunta = '¿Aceptar?';
     
