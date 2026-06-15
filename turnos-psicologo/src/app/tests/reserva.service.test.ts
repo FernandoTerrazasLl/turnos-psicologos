@@ -97,7 +97,7 @@ describe('ReservaService Unit Tests', () => {
     expect(result).toBeNull();
   });
 
-  it('actualizarReserva_ModificaDatos_GuardaExitosamente', async () => {
+  test('actualizarReserva_ModificaDatos_GuardaExitosamente', async () => {
     // HU-4 - Criterio 1: Caso válido
     // Dado que el usuario modifica los datos válidos de un turno preexistente,
     // cuando guarda los cambios, entonces el sistema debe actualizar el registro en la base de datos.
@@ -114,9 +114,9 @@ describe('ReservaService Unit Tests', () => {
       motivo: 'Consulta urgente'
     };
 
-    const mockEq = jasmine.createSpy('eq').and.resolveTo({ error: null });
-    const mockUpdate = jasmine.createSpy('update').and.returnValue({ eq: mockEq });
-    spyOn(supabase, 'from').and.returnValue({ update: mockUpdate } as any);
+    const mockEq = vi.fn().mockResolvedValue({ error: null });
+    const mockUpdate = vi.fn().mockReturnValue({ eq: mockEq });
+    vi.spyOn(supabase, 'from').mockReturnValue({ update: mockUpdate } as any);
 
     await service.actualizarReserva(reservaModificada);
 
