@@ -134,7 +134,7 @@ describe('ReservaService Unit Tests', () => {
     expect(mockEq).toHaveBeenCalledWith('id', reservaModificada.id);
   });
 
-  it('verificarDisponibilidad_Solapamiento_RetornaFalso', () => {
+  test('verificarDisponibilidad_Solapamiento_RetornaFalso', () => {
     // HU-3 - Criterio 1: Regla de negocio de no solapamiento
     // Dado que se tiene un conjunto de turnos agendados en memoria,
     // cuando se intenta crear un nuevo turno en un horario que colisiona (solapa) con uno existente,
@@ -146,6 +146,6 @@ describe('ReservaService Unit Tests', () => {
 
     const esDisponible = service.verificarDisponibilidad(startSolapado, endSolapado, mockReservas);
 
-    expect(esDisponible).toBeFalse();
+    expect(esDisponible).toBe(false);
   });
 });
