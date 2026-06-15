@@ -34,5 +34,22 @@ describe('ReservaService Unit Tests', () => {
   beforeEach(() => {
     service = new ReservaService();
   });
+
+  test('obtenerReservas_ConexionExitosa_RetornaListaDeTurnos', async () => {
+    // [HU-01] Visualización de la Agenda
+    // CA: Dado que he ingresado al sistema, cuando accedo a la sección principal, 
+    // entonces el sistema se conecta a la base de datos, obtiene la lista de turnos...
+    
+    const mockOrder = vi.fn().mockResolvedValue({ data: mockReservas, error: null });
+    const mockSelect = vi.fn().mockReturnValue({ order: mockOrder });
+    vi.spyOn(supabase, 'from').mockReturnValue({ select: mockSelect } as any);
+
+    const result = await service.obtenerReservas();
+
+    expect(supabase.from).toHaveBeenCalledWith('turnos');
+    expect(mockSelect).toHaveBeenCalledWith('*');
+    expect(mockOrder).toHaveBeenCalledWith('start', { ascending: true });
+    expect(result).toEqual(mockReservas);
+  });
   
 });
