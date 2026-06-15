@@ -78,7 +78,7 @@ describe('ReservaService Unit Tests', () => {
     const incompletaReservaInput: Omit<Reserva, 'id'> = {
       start: '2026-05-22T16:00:00.000Z',
       end: '2026-05-22T17:00:00.000Z',
-      nombre: '', // Campo obligatorio vacío
+      nombre: '', 
       apellido: 'Rojas',
       telefono: '77788899',
       correo: 'carlos@example.com',
@@ -104,7 +104,7 @@ describe('ReservaService Unit Tests', () => {
 
     const reservaModificada: Reserva = {
       id: '1',
-      start: '2026-05-22T10:30:00.000Z', // Modificada la hora
+      start: '2026-05-22T10:30:00.000Z',
       end: '2026-05-22T11:30:00.000Z',
       nombre: 'Juan Modificado',
       apellido: 'Perez',
@@ -140,7 +140,6 @@ describe('ReservaService Unit Tests', () => {
     // cuando se intenta crear un nuevo turno en un horario que colisiona (solapa) con uno existente,
     // entonces verificarDisponibilidad debe retornar falso.
 
-    // Intento de reserva que se solapa a la mitad con el mock [10:00 - 11:00]
     const startSolapado = '2026-05-22T10:30:00.000Z';
     const endSolapado = '2026-05-22T11:30:00.000Z';
 

@@ -2,7 +2,6 @@ import { describe, test, expect, vi } from 'vitest';
 import { AlertaService } from '../shared/lib/alerta.service';
 import { DayPilot } from '@daypilot/daypilot-lite-angular';
 
-// Mockear DayPilot Modal
 vi.mock('@daypilot/daypilot-lite-angular', () => {
   return {
     DayPilot: {
@@ -31,7 +30,6 @@ describe('AlertaService (Vitest)', () => {
     const service = new AlertaService();
     const pregunta = '¿Aceptar?';
     
-    // Mockear confirm para retornar canceled: false
     vi.mocked(DayPilot.Modal.confirm).mockResolvedValue({ canceled: false } as any);
     
     const resultado = await service.confirmar(pregunta);
@@ -48,7 +46,6 @@ describe('AlertaService (Vitest)', () => {
     const service = new AlertaService();
     const pregunta = '¿Aceptar?';
     
-    // Mockear confirm para retornar canceled: true
     vi.mocked(DayPilot.Modal.confirm).mockResolvedValue({ canceled: true } as any);
     
     const resultado = await service.confirmar(pregunta);
