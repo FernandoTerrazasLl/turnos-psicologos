@@ -35,8 +35,41 @@ describe('ReservaService Unit Tests', () => {
     service = new ReservaService();
   });
 
+  test('crearReserva_DatosCompletos_GuardaExitosamente', async () => {
+    // [HU3-1] Creación Manual de Reservas
+    // CA: (VÁLIDO) Dado que selecciono un horario libre de lunes a viernes, cuando ingreso todos los datos obligatorios 
+    // del paciente y guardo, entonces el sistema genera un ID único, guarda la reserva en la base de datos y el bloque de tiempo pasa a estado ocupado.
+    
+    const nuevaReservaSinId = {
+      start: '2026-05-25T10:00:00.000Z',
+      end: '2026-05-25T11:00:00.000Z',
+      nombre: 'Pedro',
+      apellido: 'Sanchez',
+      telefono: '11223344',
+      correo: 'pedro@example.com',
+      carnet: '987654',
+      motivo: 'Primera sesion'
+    };
+    
+    const reservaGenerada = { ...nuevaReservaSinId, id: 'id_generado_123' };
+    
+    const mockSingle = vi.fn().mockResolvedValue({ data: reservaGenerada, error: null });
+    const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
+    const mockInsert = vi.fn().mockReturnValue({ select: mockSelect });
+    vi.spyOn(supabase, 'from').mockReturnValue({ insert: mockInsert } as any);
+
+    const result = await service.crearReserva(nuevaReservaSinId);
+
+    expect(supabase.from).toHaveBeenCalledWith('turnos');
+    expect(mockInsert).toHaveBeenCalled();
+    const objetoInsertado = mockInsert.mock.calls[0][0][0];
+    expect(objetoInsertado.nombre).toBe(nuevaReservaSinId.nombre);
+    expect(objetoInsertado.id).toBeDefined(); // Se genera un ID interno
+    expect(result).toEqual(reservaGenerada);
+  });
+
   test('obtenerReservas_ConexionExitosa_RetornaListaDeTurnos', async () => {
-    // [HU-01] Visualización de la Agenda
+    // [HU-01-1] Visualización de la Agenda
     // CA: Dado que he ingresado al sistema, cuando accedo a la sección principal, 
     // entonces el sistema se conecta a la base de datos, obtiene la lista de turnos...
     
@@ -53,7 +86,7 @@ describe('ReservaService Unit Tests', () => {
   });
 
   test('obtenerReservaPorId_IdValido_RetornaDatosCompletos', async () => {
-    // [HU-02] Consulta de Datos del Paciente
+    // [HU-02-1] Consulta de Datos del Paciente
     // CA: (VÁLIDO) Dado que visualizo mi calendario, cuando selecciono un horario específico ya reservado, 
     // entonces el sistema busca la reserva por su ID y despliega una vista modal con el nombre...
     
@@ -71,7 +104,7 @@ describe('ReservaService Unit Tests', () => {
   });
 
   test('obtenerReservaPorId_IdInvalido_RetornaUndefined', async () => {
-    // [HU-02] Consulta de Datos del Paciente
+    // [HU-02-2] Consulta de Datos del Paciente
     // CA: (INVÁLIDO) Dado que intento consultar un turno que fue eliminado,
     // cuando el sistema busca su ID, entonces la búsqueda falla y retorna nulo/undefined.
     

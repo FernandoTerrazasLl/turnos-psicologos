@@ -11,7 +11,7 @@ describe('DiaNoLaboralService Unit Tests', () => {
   });
 
   test('esFinDeSemana_DiaSabadoODomingo_RetornaTrue', () => {
-    // [HU-01] Visualización de la Agenda
+    // [HU-01-2] Visualización de la Agenda
     // CA: (LÍMITE) Dado que estoy visualizando mi agenda, cuando el calendario renderiza los días de la semana, 
     // entonces el sistema identifica los días no laborales (sábado y domingo)...
     
