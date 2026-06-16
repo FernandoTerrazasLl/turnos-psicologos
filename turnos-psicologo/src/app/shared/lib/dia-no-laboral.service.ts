@@ -11,8 +11,8 @@ export class DiaNoLaboralService implements ValidadorFecha {
   }
 
   esFinDeSemana(fecha: DayPilot.Date | string): boolean {
-    const dia = new DayPilot.Date(fecha).getDayOfWeek();
-    return this.DIAS_NO_LABORALES.includes(dia);
+    // TODO: Implementar lógica para detectar fines de semana
+    return false;
   }
 
   esDiaLaboral(fecha: DayPilot.Date | string): boolean {
