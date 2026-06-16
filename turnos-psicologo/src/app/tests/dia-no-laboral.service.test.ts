@@ -24,4 +24,17 @@ describe('DiaNoLaboralService Unit Tests', () => {
     expect(service.esFinDeSemana(fechaDomingo)).toBe(true);
     expect(service.esFinDeSemana(fechaLunes)).toBe(false);
   });
+
+  test('esValida_DiaLaboralYNoLaboral_RetornaValidezCorrecta', () => {
+    // 2026-05-23 es Sábado (No laboral -> Inválido)
+    // 2026-05-25 es Lunes (Laboral -> Válido)
+    const fechaSabado = '2026-05-23T00:00:00';
+    const fechaLunes = '2026-05-25T00:00:00';
+
+    // Sabado debería ser inválido (false)
+    expect(service.esValida(fechaSabado)).toBe(false);
+    
+    // Lunes debería ser válido (true)
+    expect(service.esValida(fechaLunes)).toBe(true);
+  });
 });
