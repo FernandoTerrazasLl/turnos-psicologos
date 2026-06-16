@@ -52,4 +52,21 @@ describe('AlertaService', () => {
     
     expect(resultado).toBe(false);
   });
+
+  test('confirmar_RechazoDeAlerta_AbortaBorrado_RetornaFalse', async () => {
+    // [HU5-2] Cancelación de Reservas
+    // CA: (INVÁLIDO) Dado que elijo una cita y presiono eliminar, cuando el sistema me pide confirmación 
+    // ("¿Cancelar turno?") y selecciono la opción de cancelar/rechazar la alerta, entonces el sistema aborta 
+    // el borrado y la reserva se mantiene intacta en la base de datos.
+    
+    const service = new AlertaService();
+    const pregunta = '¿Cancelar turno?';
+    
+    vi.mocked(DayPilot.Modal.confirm).mockResolvedValue({ canceled: true } as any);
+    
+    const resultado = await service.confirmar(pregunta);
+    
+    expect(resultado).toBe(false);
+    expect(DayPilot.Modal.confirm).toHaveBeenCalledWith(pregunta, expect.any(Object));
+  });
 });
