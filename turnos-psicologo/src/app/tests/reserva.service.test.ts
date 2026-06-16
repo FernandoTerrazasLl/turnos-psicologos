@@ -231,4 +231,33 @@ describe('ReservaService Unit Tests', () => {
     expect(mockDelete).toHaveBeenCalled();
     expect(mockEq).toHaveBeenCalledWith('id', '1');
   });
+
+  test('obtenerReservas_ErrorDeConexion_ImprimeErrorYRetornaArrayVacio', async () => {
+    const mockOrder = vi.fn().mockResolvedValue({ data: null, error: { message: 'Connection failed' } });
+    const mockSelect = vi.fn().mockReturnValue({ order: mockOrder });
+    vi.spyOn(supabase, 'from').mockReturnValue({ select: mockSelect } as any);
+    
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const result = await service.obtenerReservas();
+
+    expect(consoleSpy).toHaveBeenCalledWith('Error al obtener reservas:', 'Connection failed');
+    expect(result).toEqual([]);
+    
+    consoleSpy.mockRestore();
+  });
+
+  test('eliminarReserva_ErrorDeConexion_ImprimeErrorYNoFalla', async () => {
+    const mockEq = vi.fn().mockResolvedValue({ error: { message: 'Delete failed' } });
+    const mockDelete = vi.fn().mockReturnValue({ eq: mockEq });
+    vi.spyOn(supabase, 'from').mockReturnValue({ delete: mockDelete } as any);
+    
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    await service.eliminarReserva('ID_ERROR');
+
+    expect(consoleSpy).toHaveBeenCalledWith('Error al eliminar reserva:', 'Delete failed');
+    
+    consoleSpy.mockRestore();
+  });
 });
