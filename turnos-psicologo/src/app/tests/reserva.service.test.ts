@@ -87,7 +87,8 @@ describe('ReservaService Unit Tests', () => {
     expect(mockEq).toHaveBeenCalledWith('id', 'ID_INEXISTENTE');
     expect(result).toBeUndefined();
   });
-    test('crearReserva_DatosCompletos_GuardaExitosamente', async () => {
+
+  test('crearReserva_DatosCompletos_GuardaExitosamente', async () => {
     // [HU3-1] Creación Manual de Reservas
     // CA: (VÁLIDO) Dado que selecciono un horario libre de lunes a viernes, cuando ingreso todos los datos obligatorios 
     // del paciente y guardo, entonces el sistema genera un ID único, guarda la reserva en la base de datos y el bloque de tiempo pasa a estado ocupado.
@@ -116,7 +117,36 @@ describe('ReservaService Unit Tests', () => {
     expect(mockInsert).toHaveBeenCalled();
     const objetoInsertado = mockInsert.mock.calls[0][0][0];
     expect(objetoInsertado.nombre).toBe(nuevaReservaSinId.nombre);
-    expect(objetoInsertado.id).toBeDefined(); // Se genera un ID interno
+    expect(objetoInsertado.id).toBeDefined();
     expect(result).toEqual(reservaGenerada);
+  });
+
+  test('crearReserva_DatosInvalidosUOmisos_RetornaNull', async () => {
+    // [HU3-2] Creación Manual de Reservas
+    // CA: (INVÁLIDO) Dado que estoy creando una reserva manual, cuando omito algún dato obligatorio del paciente 
+    // (ej. nombre o teléfono) o introduzco un formato de hora inválido, entonces el validador del sistema 
+    // me impide guardar y retorna un error solicitando corregir la información.
+    
+    const mockSingle = vi.fn().mockResolvedValue({ data: null, error: { message: 'Faltan datos obligatorios' } });
+    const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
+    const mockInsert = vi.fn().mockReturnValue({ select: mockSelect });
+    vi.spyOn(supabase, 'from').mockReturnValue({ insert: mockInsert } as any);
+
+    const reservaInvalida = {
+      start: '2026-05-25T10:00:00.000Z',
+      end: '2026-05-25T11:00:00.000Z',
+      nombre: '',
+      apellido: 'Sanchez',
+      telefono: '', 
+      correo: 'pedro@example.com',
+      carnet: '987654',
+      motivo: 'Primera sesion'
+    };
+
+    const result = await service.crearReserva(reservaInvalida);
+
+    expect(supabase.from).toHaveBeenCalledWith('turnos');
+    expect(mockInsert).toHaveBeenCalled();
+    expect(result).toBeNull();
   });
 });
