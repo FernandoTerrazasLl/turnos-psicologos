@@ -75,3 +75,9 @@ Este proyecto usa **DayPilot Lite for Angular**, una librería externa que nos d
 - Angular CLI: https://angular.dev/guide/cli
 - DayPilot Lite: https://www.daypilot.org/
 - Supabase JS: https://supabase.com/docs/reference/javascript
+
+## 12. Comandos
+
+npm run test:coverage -- --coverage.include="src/app/entities/reserva/**" --coverage.include="src/app/shared/lib/**"
+
+npx eslint . --ignore-pattern "coverage/*" --ignore-pattern "dist/*" --ignore-pattern "eslint-report.html" --ignore-pattern "reporte_eslint.html"
