@@ -215,4 +215,20 @@ describe('ReservaService Unit Tests', () => {
     expect(mockUpdate).toHaveBeenCalled();
     expect(mockEq).toHaveBeenCalledWith('id', reservaEnSabado.id);
   });
+
+  test('eliminarReserva_IdValido_BorraDeBaseDeDatos', async () => {
+    // [HU5-1] Cancelación de Reservas
+    // CA: (VÁLIDO) Dado que elijo una cita, cuando selecciono la opción de eliminar (botón ✕) y apruebo el 
+    // diálogo de confirmación, entonces el sistema borra permanentemente la reserva de la base de datos y libera el espacio.
+    
+    const mockEq = vi.fn().mockResolvedValue({ error: null });
+    const mockDelete = vi.fn().mockReturnValue({ eq: mockEq });
+    vi.spyOn(supabase, 'from').mockReturnValue({ delete: mockDelete } as any);
+
+    await service.eliminarReserva('1');
+
+    expect(supabase.from).toHaveBeenCalledWith('turnos');
+    expect(mockDelete).toHaveBeenCalled();
+    expect(mockEq).toHaveBeenCalledWith('id', '1');
+  });
 });
