@@ -19,17 +19,8 @@ export class ReservaService {
   }
 
   async obtenerReservaPorId(id: string): Promise<Reserva | undefined> {
-    const { data, error } = await supabase
-      .from('turnos')
-      .select('*')
-      .eq('id', id)
-      .single();
-
-    if (error) {
-      console.error('Error al obtener reserva:', error.message);
-      return undefined;
-    }
-    return data as Reserva;
+    // TODO: Implementar lógica para obtener la reserva desde Supabase por ID
+    return undefined;
   }
 
   async crearReserva(reserva: Omit<Reserva, 'id'>): Promise<Reserva | null> {

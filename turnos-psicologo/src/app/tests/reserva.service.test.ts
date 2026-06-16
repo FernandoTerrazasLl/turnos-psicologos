@@ -51,5 +51,22 @@ describe('ReservaService Unit Tests', () => {
     expect(mockOrder).toHaveBeenCalledWith('start', { ascending: true });
     expect(result).toEqual(mockReservas);
   });
-  
+
+  test('obtenerReservaPorId_IdValido_RetornaDatosCompletos', async () => {
+    // [HU-02] Consulta de Datos del Paciente
+    // CA: (VÁLIDO) Dado que visualizo mi calendario, cuando selecciono un horario específico ya reservado, 
+    // entonces el sistema busca la reserva por su ID y despliega una vista modal con el nombre...
+    
+    const mockSingle = vi.fn().mockResolvedValue({ data: mockReservas[0], error: null });
+    const mockEq = vi.fn().mockReturnValue({ single: mockSingle });
+    const mockSelect = vi.fn().mockReturnValue({ eq: mockEq });
+    vi.spyOn(supabase, 'from').mockReturnValue({ select: mockSelect } as any);
+
+    const result = await service.obtenerReservaPorId('1');
+
+    expect(supabase.from).toHaveBeenCalledWith('turnos');
+    expect(mockSelect).toHaveBeenCalledWith('*');
+    expect(mockEq).toHaveBeenCalledWith('id', '1');
+    expect(result).toEqual(mockReservas[0]);
+  });
 });
