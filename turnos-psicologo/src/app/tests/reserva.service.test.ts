@@ -193,4 +193,26 @@ describe('ReservaService Unit Tests', () => {
     });
     expect(mockEq).toHaveBeenCalledWith('id', reservaModificada.id);
   });
+
+  test('actualizarReserva_DestinoDiaNoLaboral_AbortaActualizacion', async () => {
+    // [HU4-2] Edición de Reservas
+    // CA: (INVÁLIDO) Dado que intento mover o editar la fecha de un turno existente, cuando el destino elegido es un día 
+    // no laboral (sábado o domingo), entonces el sistema aborta la actualización y el turno regresa a su posición original con un mensaje de error.
+    
+    const mockEq = vi.fn().mockResolvedValue({ error: { message: 'No se puede reservar en fines de semana' } });
+    const mockUpdate = vi.fn().mockReturnValue({ eq: mockEq });
+    vi.spyOn(supabase, 'from').mockReturnValue({ update: mockUpdate } as any);
+
+    const reservaEnSabado: Reserva = {
+      ...mockReservas[0],
+      start: '2026-05-23T12:00:00.000Z', 
+      end: '2026-05-23T13:00:00.000Z'
+    };
+
+    await service.actualizarReserva(reservaEnSabado);
+
+    expect(supabase.from).toHaveBeenCalledWith('turnos');
+    expect(mockUpdate).toHaveBeenCalled();
+    expect(mockEq).toHaveBeenCalledWith('id', reservaEnSabado.id);
+  });
 });
