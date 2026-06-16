@@ -260,4 +260,13 @@ describe('ReservaService Unit Tests', () => {
     
     consoleSpy.mockRestore();
   });
+    test('obtenerReservas_SinErrorPeroDataNull_RetornaArrayVacio', async () => {
+    const mockOrder = vi.fn().mockResolvedValue({ data: null, error: null });
+    const mockSelect = vi.fn().mockReturnValue({ order: mockOrder });
+    vi.spyOn(supabase, 'from').mockReturnValue({ select: mockSelect } as any);
+
+    const result = await service.obtenerReservas();
+
+    expect(result).toEqual([]);
+  });
 });
