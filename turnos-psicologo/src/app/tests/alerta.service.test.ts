@@ -69,4 +69,26 @@ describe('AlertaService', () => {
     expect(resultado).toBe(false);
     expect(DayPilot.Modal.confirm).toHaveBeenCalledWith(pregunta, expect.any(Object));
   });
+
+  test('error_introduceMensaje_llamaAInfoConElMismoMensaje', async () => {
+    const service = new AlertaService();
+    const mensaje = 'Ocurrió un error crítico';
+    
+    const infoSpy = vi.spyOn(service, 'info').mockResolvedValue();
+    
+    await service.error(mensaje);
+    
+    expect(infoSpy).toHaveBeenCalledWith(mensaje);
+  });
+
+  test('exito_introduceMensaje_llamaAInfoConElMismoMensaje', async () => {
+    const service = new AlertaService();
+    const mensaje = 'Operación completada exitosamente';
+    
+    const infoSpy = vi.spyOn(service, 'info').mockResolvedValue();
+    
+    await service.exito(mensaje);
+    
+    expect(infoSpy).toHaveBeenCalledWith(mensaje);
+  });
 });
