@@ -35,39 +35,6 @@ describe('ReservaService Unit Tests', () => {
     service = new ReservaService();
   });
 
-  test('crearReserva_DatosCompletos_GuardaExitosamente', async () => {
-    // [HU3-1] Creación Manual de Reservas
-    // CA: (VÁLIDO) Dado que selecciono un horario libre de lunes a viernes, cuando ingreso todos los datos obligatorios 
-    // del paciente y guardo, entonces el sistema genera un ID único, guarda la reserva en la base de datos y el bloque de tiempo pasa a estado ocupado.
-    
-    const nuevaReservaSinId = {
-      start: '2026-05-25T10:00:00.000Z',
-      end: '2026-05-25T11:00:00.000Z',
-      nombre: 'Pedro',
-      apellido: 'Sanchez',
-      telefono: '11223344',
-      correo: 'pedro@example.com',
-      carnet: '987654',
-      motivo: 'Primera sesion'
-    };
-    
-    const reservaGenerada = { ...nuevaReservaSinId, id: 'id_generado_123' };
-    
-    const mockSingle = vi.fn().mockResolvedValue({ data: reservaGenerada, error: null });
-    const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
-    const mockInsert = vi.fn().mockReturnValue({ select: mockSelect });
-    vi.spyOn(supabase, 'from').mockReturnValue({ insert: mockInsert } as any);
-
-    const result = await service.crearReserva(nuevaReservaSinId);
-
-    expect(supabase.from).toHaveBeenCalledWith('turnos');
-    expect(mockInsert).toHaveBeenCalled();
-    const objetoInsertado = mockInsert.mock.calls[0][0][0];
-    expect(objetoInsertado.nombre).toBe(nuevaReservaSinId.nombre);
-    expect(objetoInsertado.id).toBeDefined(); // Se genera un ID interno
-    expect(result).toEqual(reservaGenerada);
-  });
-
   test('obtenerReservas_ConexionExitosa_RetornaListaDeTurnos', async () => {
     // [HU-01-1] Visualización de la Agenda
     // CA: Dado que he ingresado al sistema, cuando accedo a la sección principal, 
@@ -119,5 +86,37 @@ describe('ReservaService Unit Tests', () => {
     expect(mockSelect).toHaveBeenCalledWith('*');
     expect(mockEq).toHaveBeenCalledWith('id', 'ID_INEXISTENTE');
     expect(result).toBeUndefined();
+  });
+    test('crearReserva_DatosCompletos_GuardaExitosamente', async () => {
+    // [HU3-1] Creación Manual de Reservas
+    // CA: (VÁLIDO) Dado que selecciono un horario libre de lunes a viernes, cuando ingreso todos los datos obligatorios 
+    // del paciente y guardo, entonces el sistema genera un ID único, guarda la reserva en la base de datos y el bloque de tiempo pasa a estado ocupado.
+    
+    const nuevaReservaSinId = {
+      start: '2026-05-25T10:00:00.000Z',
+      end: '2026-05-25T11:00:00.000Z',
+      nombre: 'Pedro',
+      apellido: 'Sanchez',
+      telefono: '11223344',
+      correo: 'pedro@example.com',
+      carnet: '987654',
+      motivo: 'Primera sesion'
+    };
+    
+    const reservaGenerada = { ...nuevaReservaSinId, id: 'id_generado_123' };
+    
+    const mockSingle = vi.fn().mockResolvedValue({ data: reservaGenerada, error: null });
+    const mockSelect = vi.fn().mockReturnValue({ single: mockSingle });
+    const mockInsert = vi.fn().mockReturnValue({ select: mockSelect });
+    vi.spyOn(supabase, 'from').mockReturnValue({ insert: mockInsert } as any);
+
+    const result = await service.crearReserva(nuevaReservaSinId);
+
+    expect(supabase.from).toHaveBeenCalledWith('turnos');
+    expect(mockInsert).toHaveBeenCalled();
+    const objetoInsertado = mockInsert.mock.calls[0][0][0];
+    expect(objetoInsertado.nombre).toBe(nuevaReservaSinId.nombre);
+    expect(objetoInsertado.id).toBeDefined(); // Se genera un ID interno
+    expect(result).toEqual(reservaGenerada);
   });
 });
