@@ -162,4 +162,35 @@ describe('ReservaService Unit Tests', () => {
 
     expect(estaDisponible).toBe(false);
   });
+
+  test('actualizarReserva_DatosValidos_ActualizaEnBaseDeDatos', async () => {
+    // [HU4-1] Edición de Reservas
+    // CA: (VÁLIDO) Dado que arrastro o modifico un turno existente hacia una fecha y hora disponibles, cuando finaliza la acción, 
+    // entonces el sistema guarda la actualización en la base de datos y me despliega una alerta proactiva sugiriendo comunicarme con el cliente afectado.
+    
+    const mockEq = vi.fn().mockResolvedValue({ error: null });
+    const mockUpdate = vi.fn().mockReturnValue({ eq: mockEq });
+    vi.spyOn(supabase, 'from').mockReturnValue({ update: mockUpdate } as any);
+
+    const reservaModificada: Reserva = {
+      ...mockReservas[0],
+      start: '2026-05-22T12:00:00.000Z',
+      end: '2026-05-22T13:00:00.000Z'
+    };
+
+    await service.actualizarReserva(reservaModificada);
+
+    expect(supabase.from).toHaveBeenCalledWith('turnos');
+    expect(mockUpdate).toHaveBeenCalledWith({
+      start: reservaModificada.start,
+      end: reservaModificada.end,
+      nombre: reservaModificada.nombre,
+      apellido: reservaModificada.apellido,
+      telefono: reservaModificada.telefono,
+      correo: reservaModificada.correo,
+      carnet: reservaModificada.carnet,
+      motivo: reservaModificada.motivo
+    });
+    expect(mockEq).toHaveBeenCalledWith('id', reservaModificada.id);
+  });
 });
