@@ -4,16 +4,18 @@ import { supabase } from '../../shared/api/supabase.client';
 
 @Injectable({ providedIn: 'root' })
 export class ReservaService {
+  private readonly TABLA = 'turnos';
+
   async obtenerReservas(): Promise<Reserva[]> {
     const { data, error } = await supabase
-      .from('turnos')
+      .from(this.TABLA)
       .select('*')
       .order('start', { ascending: true });
     if (error) {
       console.error('Error al obtener reservas:', error.message);
       return [];
     }
-    return (data as Reserva[]) ?? [];
+    return (data || []) as Reserva[];
   }
 
   async obtenerReservaPorId(id: string): Promise<Reserva | undefined> {
