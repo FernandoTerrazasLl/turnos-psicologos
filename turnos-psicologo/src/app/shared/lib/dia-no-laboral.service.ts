@@ -4,7 +4,7 @@ import { ValidadorFecha } from './contratos';
 
 @Injectable({ providedIn: 'root' })
 export class DiaNoLaboralService implements ValidadorFecha {
-  private readonly DIAS_NO_LABORALES = [0, 6]; // 0=Domingo, 6=Sábado
+  private readonly DIAS_NO_LABORALES = new Set([0, 6]); // 0=Domingo, 6=Sábado
 
   esValida(fecha: string | Date): boolean {
     return !this.esFinDeSemana(fecha as string);
@@ -12,7 +12,7 @@ export class DiaNoLaboralService implements ValidadorFecha {
 
   esFinDeSemana(fecha: DayPilot.Date | string): boolean {
     const dia = new DayPilot.Date(fecha).getDayOfWeek();
-    return this.DIAS_NO_LABORALES.includes(dia);
+    return this.DIAS_NO_LABORALES.has(dia);
   }
 
   esDiaLaboral(fecha: DayPilot.Date | string): boolean {
