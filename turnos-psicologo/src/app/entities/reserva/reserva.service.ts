@@ -20,7 +20,7 @@ export class ReservaService {
 
   async obtenerReservaPorId(id: string): Promise<Reserva | undefined> {
     const { data, error } = await supabase
-      .from('turnos')
+      .from(this.TABLA)
       .select('*')
       .eq('id', id)
       .single();
