@@ -69,4 +69,22 @@ describe('ReservaService Unit Tests', () => {
     expect(mockEq).toHaveBeenCalledWith('id', '1');
     expect(result).toEqual(mockReservas[0]);
   });
+
+  test('obtenerReservaPorId_IdInvalido_RetornaUndefined', async () => {
+    // [HU-02] Consulta de Datos del Paciente
+    // CA: (INVÁLIDO) Dado que intento consultar un turno que fue eliminado,
+    // cuando el sistema busca su ID, entonces la búsqueda falla y retorna nulo/undefined.
+    
+    const mockSingle = vi.fn().mockResolvedValue({ data: null, error: { message: 'Row not found' } });
+    const mockEq = vi.fn().mockReturnValue({ single: mockSingle });
+    const mockSelect = vi.fn().mockReturnValue({ eq: mockEq });
+    vi.spyOn(supabase, 'from').mockReturnValue({ select: mockSelect } as any);
+
+    const result = await service.obtenerReservaPorId('ID_INEXISTENTE');
+
+    expect(supabase.from).toHaveBeenCalledWith('turnos');
+    expect(mockSelect).toHaveBeenCalledWith('*');
+    expect(mockEq).toHaveBeenCalledWith('id', 'ID_INEXISTENTE');
+    expect(result).toBeUndefined();
+  });
 });
