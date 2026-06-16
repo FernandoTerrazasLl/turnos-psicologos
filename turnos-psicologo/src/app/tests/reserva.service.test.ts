@@ -149,4 +149,17 @@ describe('ReservaService Unit Tests', () => {
     expect(mockInsert).toHaveBeenCalled();
     expect(result).toBeNull();
   });
+
+  test('verificarDisponibilidad_HorarioSolapado_RetornaFalse', () => {
+    // [HU3-3] Creación Manual de Reservas
+    // CA: (INVÁLIDO) Dado que inicio la creación de un nuevo turno, cuando el horario seleccionado se cruza o solapa 
+    // con un turno preexistente en memoria, entonces el validador de disponibilidad lo rechaza y alerta que el horario ya está ocupado.
+    
+    const startSolapado = '2026-05-22T10:30:00.000Z';
+    const endSolapado = '2026-05-22T11:30:00.000Z';
+
+    const estaDisponible = service.verificarDisponibilidad(startSolapado, endSolapado, mockReservas);
+
+    expect(estaDisponible).toBe(false);
+  });
 });
